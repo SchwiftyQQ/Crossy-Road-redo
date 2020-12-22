@@ -13,8 +13,6 @@ namespace Assets.Scripts
         GameEvents events;
 
 
-        public event Action Died;
-
         #region TweenParams
         [SerializeField] float jumpPower;
         [SerializeField] int numberOfJumps = 1;
@@ -52,7 +50,7 @@ namespace Assets.Scripts
             {
                 JumpMove(this.transform, forward, jumpPower, numberOfJumps, animDuration);
 
-                GameEvents.Instance.OnMoreTerrainSpawn(transform.position);
+                events.OnMoreTerrainSpawn(transform.position);
             }
 
             if (Input.GetKeyDown(KeyCode.S) && allowedKeyPress == 1)
@@ -117,6 +115,10 @@ namespace Assets.Scripts
         }
 
 
+
+
+
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.GetComponentInParent<Water>() || other.gameObject.GetComponentInParent<CarMovement>())
@@ -143,7 +145,7 @@ namespace Assets.Scripts
 
         private void OnDisable()
         {
-            Died?.Invoke();
+            events.OnPlayerDied();
         }
 
     }

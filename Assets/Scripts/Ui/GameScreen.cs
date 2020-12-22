@@ -11,21 +11,23 @@ namespace Assets.Scripts.Ui
         [SerializeField] private Text scoreText;
 
         private ScoreManager scoreManager;
+        private GameEvents events;
 
         private void Awake()
         {
             scoreManager = GameManager.Instance.ScoreManager;
+            events = GameEvents.Instance;
         }
 
         private void OnEnable()
         {
             UpdateScoreText(scoreManager.Score);
-            scoreManager.ScoreChanged += ScoreManager_ScoreChanged;
+            events.ScoreChanged += ScoreManager_ScoreChanged;
         }
 
         private void OnDisable()
         {
-            scoreManager.ScoreChanged -= ScoreManager_ScoreChanged;
+            events.ScoreChanged -= ScoreManager_ScoreChanged;
         }
 
         private void UpdateScoreText(int score)

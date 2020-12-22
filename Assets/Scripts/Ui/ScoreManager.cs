@@ -7,18 +7,20 @@ namespace Assets.Scripts.Ui
 {
     public class ScoreManager
     {
-        public event Action<int> ScoreChanged;
+
         public int Score { get; private set; }
 
-        public ScoreManager(IPlayer player)
+        public ScoreManager()
         {
-            player.Died += CollectCoins;
+            GameEvents.Instance.PlayerDied += CollectCoins;
         }
 
         void CollectCoins()
         {
             Score += UnityEngine.Random.Range(85, 111);
-            ScoreChanged?.Invoke(Score);
+            GameEvents.Instance.OnScoreChanged(Score);
+
+            UiManager.Instance.ShowScreen(ScreenType.Result);
         }
     }
 }

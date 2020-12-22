@@ -16,13 +16,17 @@ namespace Assets.Scripts
         #endregion
 
 
-        public event Action<float> onMovingObjectSpawn;
+        public event Action<float> OnMovingOBjectSpawn;
         public event Action<Collider> onTreeTriggerEnter;
         public event Action<Vector3> onMoreTerrainSpawn;
+        public event Action<int> ScoreChanged;
+        public event Action PlayerDied;
 
 
-        public void SpawnAMovingOBject(float moveEndValue) => onMovingObjectSpawn?.Invoke(moveEndValue);
+        public void SpawnAMovingOBject(float moveEndValue) => OnMovingOBjectSpawn?.Invoke(moveEndValue);
         public void OnTreeTriggerEnter(Collider other) => onTreeTriggerEnter?.Invoke(other);
         public void OnMoreTerrainSpawn(Vector3 playerPos) => onMoreTerrainSpawn?.Invoke(playerPos);
+        public void OnScoreChanged(int score) => ScoreChanged?.Invoke(score);
+        public void OnPlayerDied() => PlayerDied?.Invoke();
     }
 }

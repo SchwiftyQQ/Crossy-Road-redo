@@ -7,7 +7,7 @@ namespace Assets.Scripts
 {
     public interface IPlayer 
     {
-        event Action Died;
+        
         
     }
 }

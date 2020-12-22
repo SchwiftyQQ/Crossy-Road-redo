@@ -6,9 +6,12 @@ namespace Assets.Scripts
 {
     public class GameManager : MonoBehaviour
     {
+        UiManager Ui;
+
+
         [SerializeField] private Player playerPrefab;
 
-        public IPlayer Player { get; private set; }
+        public Player Player { get; private set; }
 
         public ScoreManager ScoreManager { get; private set; }
 
@@ -23,9 +26,11 @@ namespace Assets.Scripts
 
         private void Start()
         {
+            Ui = UiManager.Instance;
+
             Player = Instantiate(playerPrefab);
-            ScoreManager = new ScoreManager(Player);
-            UiManager.Instance.ShowScreen(ScreenType.MainMenu);
+            ScoreManager = new ScoreManager();
+            Ui.ShowScreen(ScreenType.MainMenu);
         }
     }
 }

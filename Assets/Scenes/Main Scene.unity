@@ -246,7 +246,7 @@ MonoBehaviour:
   - tag: Car
     prefab: {fileID: 8020744360863659298, guid: 87a07f9cbe8d97c409c1ed5129f1364b,
       type: 3}
-    size: 40
+    size: 50
   - tag: Road
     prefab: {fileID: 1323331847451871956, guid: 41bf61d3c225eee45a9814059235e3e5,
       type: 3}
@@ -266,7 +266,7 @@ MonoBehaviour:
   - tag: Log
     prefab: {fileID: 8042479018543683452, guid: 795bb2b9f6a946e47a859013efb82fa2,
       type: 3}
-    size: 60
+    size: 75
 --- !u!4 &232822219
 Transform:
   m_ObjectHideFlags: 0
@@ -325,7 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f409f9056a600c4599e10791e792584, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 539474197688865668, guid: 4a2b9e093874ddf4f8313d16170f8843, type: 3}
+  player: {fileID: 0}
   smoothness: 0.3
 --- !u!1 &436648992
 GameObject:
@@ -632,8 +632,9 @@ MonoBehaviour:
   - screenType: 2
     screenPrefab: {fileID: 2081170134660230108, guid: 35207887ee897154eb10cfc487242962,
       type: 3}
-  - screenType: 0
-    screenPrefab: {fileID: 0}
+  - screenType: 3
+    screenPrefab: {fileID: 8135767339499062789, guid: a263496c0d22b4048991fd334ca3ac6e,
+      type: 3}
   canvas: {fileID: 436648995}
 --- !u!4 &980263817
 Transform:

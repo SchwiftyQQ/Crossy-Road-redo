@@ -8,24 +8,26 @@ namespace Assets.Scripts
     public class CarMovement : MonoBehaviour
     {
         GameEvents events;
+        ObjectPooler pools;
 
         [SerializeField] float duration;
 
         private void Awake()
         {
             events = GameEvents.Instance;
+            pools = ObjectPooler.Instance;
         }
 
         private void OnEnable()
         {
-            GameEvents.Instance.onMovingObjectSpawn += MoveCar;
+            events.OnMovingOBjectSpawn += MoveCar;
         }
 
         private void MoveCar(float moveEndValue)
         {
             if (gameObject.activeInHierarchy)
             {
-                events.onMovingObjectSpawn -= MoveCar;
+                events.OnMovingOBjectSpawn -= MoveCar;
                 transform.DOMoveX(moveEndValue, duration).SetEase(Ease.Linear).OnComplete(DisableObject);
             }
         }
@@ -37,7 +39,7 @@ namespace Assets.Scripts
 
         private void OnDisable()
         {
-            ObjectPooler.Instance.ReturnObjectToPool(gameObject, "Car");
+            pools.ReturnObjectToPool(gameObject, "Car");
         }
 
     }

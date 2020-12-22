@@ -14,14 +14,11 @@ namespace Assets.Scripts
 
         private Vector3 velocity = Vector3.zero;
 
-        private void Start()
-        {
-            player = (Player)GameManager.Instance.Player;
-        }
 
         // Update is called once per frame
         void Update()
         {
+
             if (player != null)
             {
                 Vector3 pos = new Vector3();
@@ -32,6 +29,7 @@ namespace Assets.Scripts
             }
             else if (player == null)
             {
+                player = (Player)GameManager.Instance.Player;
                 return;
             }
         }

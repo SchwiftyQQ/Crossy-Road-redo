@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transitLine: {fileID: 4196380264534254197}
-  minSpawnTime: 1.86
-  maxSpawnTime: 4.06
+  minSpawnTime: 2.86
+  maxSpawnTime: 5.06
 --- !u!1 &4196380264534254199
 GameObject:
   m_ObjectHideFlags: 0

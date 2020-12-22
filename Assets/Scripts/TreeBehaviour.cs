@@ -9,14 +9,24 @@ namespace Assets.Scripts
 {
     public class TreeBehaviour : MonoBehaviour
     {
+        GameEvents events;
+        ObjectPooler pools;
+
+
+        private void Awake()
+        {
+            events = GameEvents.Instance;
+            pools = ObjectPooler.Instance;
+        }
+
         private void OnTriggerEnter(Collider other)
         {
-            GameEvents.Instance.OnTreeTriggerEnter(other);
+            events.OnTreeTriggerEnter(other);
         }
 
         private void OnDisable()
         {
-            ObjectPooler.Instance.ReturnObjectToPool(gameObject, "Tree");
+            pools.ReturnObjectToPool(gameObject, "Tree");
         }
 
     }
