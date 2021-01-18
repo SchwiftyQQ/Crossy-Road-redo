@@ -31,22 +31,25 @@ namespace Assets.Scripts.Ui
                 Destroy(activeScreen.gameObject);
             }
 
-            UiScreenBinding screenBinding = null;
+            UiScreenBase screen = null;
             for (int i = 0; i < screenPrefabBindings.Length; i++)
             {
                 if (screenPrefabBindings[i].ScreenType == screenType)
                 {
-                    screenBinding = screenPrefabBindings[i];
+                    screen = screenPrefabBindings[i].ScreenPrefab;
                     break;
                 }
             }
 
-            if (screenBinding == null)
+            if (screen == null)
             {
                 throw new InvalidOperationException();
             }
 
-            activeScreen = Instantiate(screenBinding.ScreenPrefab, canvas.transform);
+            if (canvas != null)
+            {
+                activeScreen = Instantiate(screen, canvas.transform);
+            }
         }
     }
 }

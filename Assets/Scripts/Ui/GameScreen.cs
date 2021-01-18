@@ -8,6 +8,8 @@ namespace Assets.Scripts.Ui
 {
     public class GameScreen : UiScreenBase
     {
+        [SerializeField] Button optionsScreenButton;
+
         [SerializeField] private Text scoreText;
 
         private ScoreManager scoreManager;
@@ -17,17 +19,20 @@ namespace Assets.Scripts.Ui
         {
             scoreManager = GameManager.Instance.ScoreManager;
             events = GameEvents.Instance;
+
+            optionsScreenButton.onClick.AddListener(OpenOptionsScreen);
         }
 
         private void OnEnable()
         {
             UpdateScoreText(scoreManager.Score);
-            events.ScoreChanged += ScoreManager_ScoreChanged;
+
+            events.OnScoreIncrease += ScoreManager_IncreaseScore;
         }
 
         private void OnDisable()
         {
-            events.ScoreChanged -= ScoreManager_ScoreChanged;
+            events.OnScoreIncrease -= ScoreManager_IncreaseScore;
         }
 
         private void UpdateScoreText(int score)
@@ -35,9 +40,18 @@ namespace Assets.Scripts.Ui
             scoreText.text = score.ToString();
         }
 
-        private void ScoreManager_ScoreChanged(int newScore)
+        private void ScoreManager_IncreaseScore(int newScore)
         {
             UpdateScoreText(newScore);
         }
+
+
+
+        private void OpenOptionsScreen()
+        {
+            UiManager.Instance.ShowScreen(ScreenType.Options);
+            GameManager.PauseTheGame();
+        }
+
     }
 }

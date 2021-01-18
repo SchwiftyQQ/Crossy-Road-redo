@@ -21,12 +21,20 @@ namespace Assets.Scripts
         public List<Pool> pools;
         public Dictionary<string, Queue<GameObject>> poolDictionary;
 
+
         #region quick Singleton
         public static ObjectPooler Instance;
 
         private void Awake()
         {
             Instance = this;
+
+            
+        }
+        #endregion
+
+        private void Start()
+        {
 
             poolDictionary = new Dictionary<string, Queue<GameObject>>();
 
@@ -40,18 +48,12 @@ namespace Assets.Scripts
                     {
                         GameObject obj = Instantiate(pool.prefab);
                         obj.SetActive(false);
+                        obj.transform.SetParent(transform);
                         objectPool.Enqueue(obj);
                     }
                     poolDictionary.Add(pool.tag, objectPool);
                 }
             }
-
-        }
-        #endregion
-
-        private void Start()
-        {
-            
         }
 
         public GameObject SpawnFromPool(string tag, Vector3 pos, Quaternion rotation)
@@ -66,8 +68,6 @@ namespace Assets.Scripts
             objectToSpawn.transform.position = pos;
             objectToSpawn.transform.rotation = rotation;
             objectToSpawn.SetActive(true);
-
-            //poolDictionary[tag].Enqueue(objectToSpawn);
 
             return objectToSpawn;
         }

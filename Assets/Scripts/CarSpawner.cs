@@ -15,10 +15,12 @@ namespace Assets.Scripts
         [SerializeField] float minSpawnTime;
         [SerializeField] float maxSpawnTime;
 
+
         private void OnEnable()
         {
             StartCoroutine(SpawnAMovingObject("Car", transitLine, minSpawnTime, maxSpawnTime, transform));
             
         }
+        
     }
 }

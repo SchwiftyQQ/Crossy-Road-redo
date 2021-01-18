@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
@@ -15,18 +16,25 @@ namespace Assets.Scripts
         }
         #endregion
 
+        public event Action<float> OnMovingObjectSpawn;
+        public event Action<Vector3> OnTerrainGenerate;
 
-        public event Action<float> OnMovingOBjectSpawn;
-        public event Action<Collider> onTreeTriggerEnter;
-        public event Action<Vector3> onMoreTerrainSpawn;
-        public event Action<int> ScoreChanged;
+        public event Action<Text> OnDailyCoinReward;
+        public event Action<int> OnScoreIncrease;
+
+        public event Action PlayerMovedUp;
         public event Action PlayerDied;
 
 
-        public void SpawnAMovingOBject(float moveEndValue) => OnMovingOBjectSpawn?.Invoke(moveEndValue);
-        public void OnTreeTriggerEnter(Collider other) => onTreeTriggerEnter?.Invoke(other);
-        public void OnMoreTerrainSpawn(Vector3 playerPos) => onMoreTerrainSpawn?.Invoke(playerPos);
-        public void OnScoreChanged(int score) => ScoreChanged?.Invoke(score);
+        public void SpawnAMovingOBject(float moveEndValue) => OnMovingObjectSpawn?.Invoke(moveEndValue);
+        public void GenerateTerrain(Vector3 playerPos) => OnTerrainGenerate?.Invoke(playerPos);
+
+        public void IncreaseScore(int score) => OnScoreIncrease?.Invoke(score);
+        public void CollectReward(Text coinsText) => OnDailyCoinReward?.Invoke(coinsText);
+
+        public void OnPlayerMovedUp() => PlayerMovedUp?.Invoke();
         public void OnPlayerDied() => PlayerDied?.Invoke();
+
+
     }
 }

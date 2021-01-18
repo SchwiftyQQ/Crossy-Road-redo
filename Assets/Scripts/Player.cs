@@ -8,10 +8,9 @@ using Assets.Scripts.Ui;
 
 namespace Assets.Scripts
 {
-    public class Player : MonoBehaviour, IPlayer
+    public class Player : PlayerMovement
     {
         GameEvents events;
-
 
         #region TweenParams
         [SerializeField] float jumpPower;
@@ -27,101 +26,111 @@ namespace Assets.Scripts
         private Vector3 back;
         #endregion
 
-        Vector3 previousPosition;
-        int allowedKeyPress = 1;
+
+        public static bool IsOnLog { get; private set; } = false;
 
         private void Start()
         {
             events = GameEvents.Instance;
 
-            
-            events.onTreeTriggerEnter += BounceOffTrees;
         }
 
-        private void Update()
+        private void LateUpdate()
         {
-            UpdateDirections();
             MovementKeyboard();
+            MovementMobile();
+            UpdateDirections();
         }
 
         private void MovementKeyboard()
         {
             if (Input.GetKeyDown(KeyCode.W) && allowedKeyPress == 1)
             {
-                JumpMove(this.transform, forward, jumpPower, numberOfJumps, animDuration);
+                JumpMove(transform, forward, jumpPower, numberOfJumps, animDuration);
 
-                events.OnMoreTerrainSpawn(transform.position);
+                events.GenerateTerrain(transform.position);
+
+                this.Wait(animDuration, ScoreConditionsCheck);
+
             }
 
             if (Input.GetKeyDown(KeyCode.S) && allowedKeyPress == 1)
             {
-                JumpMove(this.transform, back, jumpPower, numberOfJumps, animDuration);
+                JumpMove(transform, back, jumpPower, numberOfJumps, animDuration);
+
             }
 
             if (Input.GetKeyDown(KeyCode.D) && allowedKeyPress == 1)
             {
-                JumpMove(this.transform, right, jumpPower, numberOfJumps, animDuration);
+                if (IsOnLog)
+                    JumpMove(transform, Vector3.right);
+                else
+                    JumpMove(transform, right, jumpPower, numberOfJumps, animDuration);
             }
 
             if (Input.GetKeyDown(KeyCode.A) && allowedKeyPress == 1)
             {
-                JumpMove(this.transform, left, jumpPower, numberOfJumps, animDuration);
+                if (IsOnLog)
+                    JumpMove(transform, Vector3.left);
+                else
+                    JumpMove(transform, left, jumpPower, numberOfJumps, animDuration);
+            }
+        }
+
+        private void MovementMobile()
+        {
+            if (MobileControls.PlayerHasSwiped() && allowedKeyPress == 1)
+            {
+                MobileControls.SwipeControl(transform, left, right, forward, back, jumpPower, numberOfJumps, animDuration);
+                
+                events.GenerateTerrain(transform.position);
+
+                this.Wait(animDuration, ScoreConditionsCheck);
             }
         }
 
         private void UpdateDirections()
         {
-            if (transform.parent == null) {
-                left = new Vector3(Mathf.Round(transform.position.x - 1), transform.position.y, transform.position.z);
-                right = new Vector3(Mathf.Round(transform.position.x + 1), transform.position.y, transform.position.z);
-                forward = new Vector3(Mathf.Round(transform.position.x), transform.position.y, Mathf.Round(transform.position.z + 1));
-                back = new Vector3(Mathf.Round(transform.position.x), transform.position.y, Mathf.Round(transform.position.z - 1));
-            }
+            left = new Vector3(transform.position.x - 1, transform.position.y, transform.position.z);
+            right = new Vector3(transform.position.x + 1, transform.position.y, transform.position.z);
+            forward = new Vector3(Mathf.Round(transform.position.x), transform.position.y, Mathf.Round(transform.position.z + 1));
+            back = new Vector3(Mathf.Round(transform.position.x), transform.position.y, Mathf.Round(transform.position.z - 1));
+        }
 
-            else if (transform.parent != null)
+        private void BounceOffTrees()
+        {
+            allowedKeyPress = 1;
+            Debug.Log("bouncing off");
+            DOTween.Kill(transform);
+            JumpMove(transform, previousPosition, jumpPower, numberOfJumps, animDuration);
+        }
+
+        private void ScoreConditionsCheck()
+        {
+            // checks the highest previous Z position from the list, and if next position is higher, increases score
+            float maxZpos = Mathf.Max(prevZpositions.ToArray());
+
+            if (transform.position.z > maxZpos)
             {
-                left = new Vector3(transform.position.x - 1, transform.position.y, transform.position.z);
-                right = new Vector3(transform.position.x + 1, transform.position.y, transform.position.z);
-                forward = new Vector3(Mathf.Round(transform.position.x), transform.position.y, Mathf.Round(transform.position.z + 1));
-                back = new Vector3(Mathf.Round(transform.position.x), transform.position.y, Mathf.Round(transform.position.z - 1));
+                GameEvents.Instance.OnPlayerMovedUp();
             }
         }
-
-        void JumpMove(Transform objToMove, Vector3 dir, float jumpPower, int numJumps, float duration)
-        {
-
-            previousPosition = transform.position;
-
-            allowedKeyPress -= 1;
-
-            objToMove.DOJump(dir, jumpPower, numJumps, duration).OnComplete(ReplanishKeyPress);
-
-            jumpPower = 1;
-        }
-
-        private void ReplanishKeyPress()
-        {
-            allowedKeyPress += 1;
-        }
-
-        private void BounceOffTrees(Collider other)
-        {
-            if (other.gameObject.GetComponent<Player>())
-            {
-                Debug.Log("bouncing off");
-                DOTween.Kill(transform);
-                transform.DOJump(previousPosition, jumpPower, numberOfJumps, animDuration).OnComplete(ReplanishKeyPress);
-            }
-        }
-
-
-
-
 
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.GetComponentInParent<Water>() || other.gameObject.GetComponentInParent<CarMovement>())
+            if (other.GetComponentInParent<CarMovement>()
+            ||  other.GetComponentInParent<Water>())           
+            { 
+                gameObject.SetActive(false);
+            }
+
+            else if (other.GetComponentInParent<TreeBehaviour>())
+            {
+                BounceOffTrees();
+            }
+
+            else if (other.GetComponentInParent<TreeSpawner>() && other.GetType() == typeof(CapsuleCollider))
             {
                 gameObject.SetActive(false);
             }
@@ -131,7 +140,8 @@ namespace Assets.Scripts
         {
             if (collision.gameObject.GetComponentInParent<LogMovement>())
             {
-                gameObject.transform.SetParent(collision.transform.parent);
+                gameObject.transform.SetParent(collision.transform);
+                IsOnLog = true;
             }
         }
 
@@ -140,12 +150,17 @@ namespace Assets.Scripts
             if (collision.gameObject.GetComponentInParent<LogMovement>())
             {
                 gameObject.transform.SetParent(null);
+                IsOnLog = false;
             }
         }
 
         private void OnDisable()
         {
             events.OnPlayerDied();
+
+            prevZpositions.Clear();
+
+            IsOnLog = false;
         }
 
     }

@@ -19,14 +19,14 @@ namespace Assets.Scripts
 
         private void OnEnable()
         {
-            events.OnMovingOBjectSpawn += MoveLog;
+            events.OnMovingObjectSpawn += MoveLog;
         }
 
         private void MoveLog(float moveEndValue)
         {
-            if (gameObject.activeInHierarchy)
+            if (gameObject.activeInHierarchy && gameObject != null)
             {
-                events.OnMovingOBjectSpawn -= MoveLog;
+                events.OnMovingObjectSpawn -= MoveLog;
                 transform.DOMoveX(moveEndValue, duration).SetEase(Ease.Linear).OnComplete(DisableObject);
             }
         }
@@ -39,6 +39,7 @@ namespace Assets.Scripts
         private void OnDisable()
         {
             pools.ReturnObjectToPool(gameObject, "Log");
+            DOTween.Kill(transform);
         }
     }
 }

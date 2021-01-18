@@ -10,14 +10,12 @@ namespace Assets.Scripts
     public class TreeSpawner : ObjectSpawner
     {
         [SerializeField] BoxCollider treeLine;
-
-
-
+        [SerializeField] List<Vector3> previousPositions;
 
 
         private void OnEnable()
         {
-            StartCoroutine(SpawnTrees("Tree", treeLine, transform));
+            StartCoroutine(SpawnTrees("Tree", previousPositions, treeLine, transform));
         }
 
     }

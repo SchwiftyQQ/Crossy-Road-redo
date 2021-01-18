@@ -5,9 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using Assets.Scripts.SceneManagment;
 
 namespace Assets.Scripts.Ui
 {
+    //First thing that loads
     public class MainMenuScreen : UiScreenBase
     {
         [SerializeField] private Button startGameButton;
@@ -24,9 +27,12 @@ namespace Assets.Scripts.Ui
         }
 
 
+        //loads another scene where Loading Screen logic is
         private void StartGameButton_OnClick()
         {
-            UiManager.Instance.ShowScreen(ScreenType.Game);
+            //UiManager.Instance.ShowScreen(ScreenType.Game);
+            SceneManager.LoadSceneAsync((int)SceneIndexes.LOADING_SCREEN, LoadSceneMode.Additive);
+            gameObject.SetActive(false);
         }
     }
 }

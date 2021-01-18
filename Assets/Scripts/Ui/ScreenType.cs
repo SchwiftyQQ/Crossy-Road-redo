@@ -12,5 +12,6 @@ namespace Assets.Scripts.Ui
         MainMenu = 1,
         Game = 2,
         Result = 3,
+        Options = 4,
     }
 }

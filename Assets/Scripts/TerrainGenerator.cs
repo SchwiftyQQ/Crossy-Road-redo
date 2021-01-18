@@ -9,31 +9,47 @@ namespace Assets.Scripts
 {
     public class TerrainGenerator : MonoBehaviour
     {
+        [Header("Distance from player that new terrain starts generating")]
         [SerializeField] int distanceFromPlayer;
-        [SerializeField] int startingTerrainAmount = 20;
+        [Space]
+        [SerializeField] int startingTerrainAmount;
 
 
         Vector3 startingTerrainSpawnPos = new Vector3(0f, 0f, 0f);
         Vector3 terrainSpawnPos = new Vector3(0f, 0f, 0f);
 
 
-        string[] pooledTerrainNames = new string[] { "Grass", "Road", "Water" };
-        List<GameObject> currentTerrain = new List<GameObject>();
+        readonly List<string> pooledTerrainNames = new List<string> (3) { "Grass", "Road", "Water" };
+        readonly List<GameObject> currentTerrain = new List<GameObject>();
+
+
+        string previousTerrain = null;
 
         private void Awake()
         {
-            GameEvents.Instance.onMoreTerrainSpawn += SpawnAndDespawnTerrain;
+            GameEvents.Instance.OnTerrainGenerate += SpawnAndDespawnTerrain;
         }
 
         void Start()
         {
             terrainSpawnPos.z = startingTerrainAmount;
 
-            Vector3 terrainPos = new Vector3(0f, 0f, 0f);
+            GenerateStartingTerrain();
+        }
 
+        private void GenerateStartingTerrain()
+        {
+
+
+            Vector3 terrainPos = new Vector3(0f, 0f, 0f);
             for (int i = 0; i < startingTerrainAmount; i++)
             {
-                string randomPoolName = pooledTerrainNames[Random.Range(0, pooledTerrainNames.Length)];
+                string randomPoolName = pooledTerrainNames[Random.Range(0, pooledTerrainNames.Count)];
+                while (randomPoolName == previousTerrain)
+                {
+                    randomPoolName = pooledTerrainNames[Random.Range(0, pooledTerrainNames.Count)];
+                }
+
                 switch (randomPoolName)
                 {
                     case "Grass":
@@ -48,7 +64,9 @@ namespace Assets.Scripts
                 }
 
                 GameObject startingTerrain = ObjectPooler.Instance.SpawnFromPool(randomPoolName, terrainPos, Quaternion.identity);
+                previousTerrain = randomPoolName;
                 currentTerrain.Add(startingTerrain);
+
 
                 startingTerrainSpawnPos.z++;
             }
@@ -58,15 +76,14 @@ namespace Assets.Scripts
         {
             if (terrainSpawnPos.z - Mathf.Round(playerPos.z) < distanceFromPlayer)
             {
-                string randomPoolName = pooledTerrainNames[Random.Range(0, pooledTerrainNames.Length)];
+                string randomPoolName = pooledTerrainNames[Random.Range(0, pooledTerrainNames.Count)];
+                
 
-                //for (int i = 1; i < Random.Range(1, 2); i++)
-                //{
-                    GameObject generatedTerrain = ObjectPooler.Instance.SpawnFromPool(randomPoolName, terrainSpawnPos, Quaternion.identity);
-                    currentTerrain.Add(generatedTerrain);
+                GameObject generatedTerrain = ObjectPooler.Instance.SpawnFromPool(randomPoolName, terrainSpawnPos, Quaternion.identity);
+                currentTerrain.Add(generatedTerrain);
 
-                    terrainSpawnPos.z++;
-                //}
+                terrainSpawnPos.z++;
+
                 ObjectPooler.Instance.ReturnObjectToPool(currentTerrain[0], randomPoolName);
                 currentTerrain[0].gameObject.SetActive(false);
                 currentTerrain.RemoveAt(0);
