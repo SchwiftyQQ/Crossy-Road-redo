@@ -43,7 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3a90383505e35a4cb1f10dd6dd1b38f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadingScreen: {fileID: 3461737660226108116, guid: cf8fc5ac207ab8b4fb31632927a6bd24,
+  loadingScreenPrefab: {fileID: 3461737660226108116, guid: cf8fc5ac207ab8b4fb31632927a6bd24,
     type: 3}
-  canvas: {fileID: 3201549534312161427, guid: e9205b6121b10d34c8f9173f7b23dce1, type: 3}
-  animator: {fileID: 1353526039, guid: cf8fc5ac207ab8b4fb31632927a6bd24, type: 3}
+  canvas: {fileID: 0}

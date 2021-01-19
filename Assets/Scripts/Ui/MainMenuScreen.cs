@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,11 +28,15 @@ namespace Assets.Scripts.Ui
         }
 
 
-        //loads another scene where Loading Screen logic is
+        //loads game scene
         private void StartGameButton_OnClick()
         {
-            //UiManager.Instance.ShowScreen(ScreenType.Game);
-            SceneManager.LoadSceneAsync((int)SceneIndexes.LOADING_SCREEN, LoadSceneMode.Additive);
+            LoadingScreen();
+        }
+
+        void LoadingScreen()
+        {
+            SceneDirector.Instance.LoadGame();
             gameObject.SetActive(false);
         }
     }

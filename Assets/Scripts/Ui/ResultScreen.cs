@@ -53,7 +53,7 @@ namespace Assets.Scripts.Ui
         void OnPlayAgainButtonClick()
         {
             // reload first scene/main manu scene
-            SceneManager.LoadScene((int)SceneIndexes.MAIN_MENU_SCREEN);
+            SceneManager.LoadScene((int)SceneIndexes.LOADING_SCREEN);
         }
 
         void DisplayPlayerScore(int score)
@@ -68,6 +68,8 @@ namespace Assets.Scripts.Ui
 
         void CheckForDailyReward()
         {
+            // will give the player a reward every 24 hours
+            
             if (string.IsNullOrEmpty(PlayerPrefs.GetString(NEXT_REWARD_TIME_KEY)))
                 PlayerPrefs.SetString(NEXT_REWARD_TIME_KEY, DateTime.Now.ToString());
 

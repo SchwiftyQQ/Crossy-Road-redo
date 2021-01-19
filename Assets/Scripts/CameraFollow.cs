@@ -9,8 +9,9 @@ namespace Assets.Scripts
 {
     public class CameraFollow : MonoBehaviour
     {
+        [Header("This gets updated at runtime")]
         [SerializeField] private Player player;
-        public float smoothness = 0.6f;
+        [SerializeField] float smoothness;
 
         private Vector3 velocity = Vector3.zero;
         private Vector3 pos = new Vector3();

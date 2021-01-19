@@ -12,27 +12,23 @@ namespace Assets.Scripts.SceneManagment
     {
         public event Action LoadingFinished;
 
-        [SerializeField] GameObject loadingScreen;
+        [SerializeField] GameObject loadingScreenPrefab;
         [SerializeField] Canvas canvas;
-        [SerializeField] Animator animator;
-        
+
+        GameObject loadingScreen;
 
         public static SceneDirector Instance;
         private void Awake()
         {
             Instance = this;
 
-        }
-
-        private void Start()
-        {
-            LoadGame();
+            SceneManager.LoadSceneAsync((int)SceneIndexes.MAIN_MENU_SCREEN, LoadSceneMode.Additive);
         }
 
         // initiates loading screen
         public void LoadGame()
         {
-            loadingScreen.SetActive(true);
+            loadingScreen = Instantiate(loadingScreenPrefab, canvas.transform);
 
             SceneManager.LoadSceneAsync((int)SceneIndexes.GAME_SCREEN, LoadSceneMode.Additive);
 
@@ -42,7 +38,7 @@ namespace Assets.Scripts.SceneManagment
         IEnumerator FakeLoadingScreen()
         {
             GameManager.gameIsPaused = true;
-            yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+            yield return new WaitForSeconds(loadingScreen.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
             GameManager.gameIsPaused = false;
             loadingScreen.SetActive(false);
             LoadingFinished.Invoke();

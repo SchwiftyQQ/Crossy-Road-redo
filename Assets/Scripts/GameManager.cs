@@ -27,7 +27,6 @@ namespace Assets.Scripts
         }
         #endregion
 
-
         private void Start()
         {
             Ui = UiManager.Instance;
@@ -40,22 +39,22 @@ namespace Assets.Scripts
             GameEvents.Instance.PlayerDied += ShowResultScreen;
         }
 
+
         private void SpawnPlayer()
         {
             Player = Instantiate(playerPrefab);
         }
-
 
         private void ShowGameScreen()
         {
             Ui.ShowScreen(ScreenType.Game);
         }
 
+
         private void ShowResultScreen()
         {
             Ui.ShowScreen(ScreenType.Result);
         }
-
 
         public static void PauseTheGame()
         {
