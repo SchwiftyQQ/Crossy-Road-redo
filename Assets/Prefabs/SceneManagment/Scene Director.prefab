@@ -45,4 +45,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadingScreenPrefab: {fileID: 3461737660226108116, guid: cf8fc5ac207ab8b4fb31632927a6bd24,
     type: 3}
+  loadingScreenPrefabWebGL: {fileID: 3461737660226108116, guid: 23b52f7a3788c2c4db7655bf221a3648,
+    type: 3}
   canvas: {fileID: 0}

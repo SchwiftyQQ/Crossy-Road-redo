@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6722478107017436478}
   - component: {fileID: 1353526039}
   m_Layer: 5
-  m_Name: Loading Screen
+  m_Name: Loading Screen WebGL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6a5b1df61ccc16545ab2d730c3bbf1f4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 820a7e2a26a8e314c9b8489f1ba8e0c2, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1

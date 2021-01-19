@@ -13,6 +13,8 @@ namespace Assets.Scripts.SceneManagment
         public event Action LoadingFinished;
 
         [SerializeField] GameObject loadingScreenPrefab;
+        [SerializeField] GameObject loadingScreenPrefabWebGL;
+
         [SerializeField] Canvas canvas;
 
         GameObject loadingScreen;
@@ -28,7 +30,11 @@ namespace Assets.Scripts.SceneManagment
         // initiates loading screen
         public void LoadGame()
         {
+#if UNITY_WEBGL
+            loadingScreen = Instantiate(loadingScreenPrefabWebGL, canvas.transform);
+#elif UNITY_ANDROID
             loadingScreen = Instantiate(loadingScreenPrefab, canvas.transform);
+#endif
 
             SceneManager.LoadSceneAsync((int)SceneIndexes.GAME_SCREEN, LoadSceneMode.Additive);
 
