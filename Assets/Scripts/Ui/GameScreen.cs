@@ -10,7 +10,8 @@ namespace Assets.Scripts.Ui
     {
         [SerializeField] Button optionsScreenButton;
 
-        [SerializeField] private Text scoreText;
+        [SerializeField] Text scoreText;
+        [SerializeField] Text coinsText;
 
         private ScoreManager scoreManager;
         private GameEvents events;

@@ -11,6 +11,7 @@ namespace Assets.Scripts.Ui
     public class ResultScreen : UiScreenBase
     {
         const string NEXT_REWARD_TIME_KEY = "NextRewardIndex";
+        const string FIRST_TIME_OPENED_KEY = "FirstTime";
 
         [SerializeField] private Button playAgainButton;
         [SerializeField] private Button claimRewardButton;
@@ -35,6 +36,8 @@ namespace Assets.Scripts.Ui
 
         private void OnEnable()
         {
+            
+
             DisplayHighScore();
             DisplayPlayerScore(scoreManager.Score);
 
@@ -68,8 +71,11 @@ namespace Assets.Scripts.Ui
 
         void CheckForDailyReward()
         {
-            // will give the player a reward every 24 hours
-            
+            //this method will give the player a reward every 24 hours
+
+            //caching "FirstTime" the player plays the game so he recieves the first reward at the start
+            PlayerPrefs.GetInt(FIRST_TIME_OPENED_KEY, 0);
+
             if (string.IsNullOrEmpty(PlayerPrefs.GetString(NEXT_REWARD_TIME_KEY)))
                 PlayerPrefs.SetString(NEXT_REWARD_TIME_KEY, DateTime.Now.ToString());
 
@@ -79,15 +85,16 @@ namespace Assets.Scripts.Ui
             double elapsedTime = (currentDateTime - rewardDateTime).TotalHours;
             Debug.Log(elapsedTime);
 
-            if (elapsedTime >= nextRewardDelay)/////////???????????
+            if (elapsedTime >= nextRewardDelay || PlayerPrefs.GetInt(FIRST_TIME_OPENED_KEY).Equals(0))
             {
                 ActivateDailyReward();
-                PlayerPrefs.DeleteKey(NEXT_REWARD_TIME_KEY);
             }
         }
 
         void ActivateDailyReward()
         {
+            PlayerPrefs.DeleteKey(NEXT_REWARD_TIME_KEY);
+            
             dailyRewardDisplay.SetActive(true);
 
             void DeactivateRewardScreen()
@@ -104,7 +111,8 @@ namespace Assets.Scripts.Ui
             }
 
             claimRewardButton.onClick.AddListener(ActivateRewardScreen);
-            
+
+            PlayerPrefs.SetInt(FIRST_TIME_OPENED_KEY, 1);
         }
     }
 }
