@@ -53,6 +53,10 @@ namespace Assets.Scripts
                     }
                     poolDictionary.Add(pool.tag, objectPool);
                 }
+                else if (pool == null)
+                {
+                    throw new ArgumentException("pool is null");
+                }
             }
         }
 

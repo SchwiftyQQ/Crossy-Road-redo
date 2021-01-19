@@ -32,7 +32,6 @@ namespace Assets.Scripts
         private void Start()
         {
             events = GameEvents.Instance;
-
         }
 
         private void LateUpdate()

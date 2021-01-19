@@ -29,6 +29,7 @@ namespace Assets.Scripts.SceneManagment
             LoadGame();
         }
 
+        // initiates loading screen
         public void LoadGame()
         {
             loadingScreen.SetActive(true);

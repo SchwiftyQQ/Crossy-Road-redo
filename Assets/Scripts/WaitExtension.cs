@@ -6,6 +6,8 @@ using UnityEngine.Events;
 
 public static class WaitExtension 
 {
+    // better version of ".Invoke()"
+
     public static void Wait(this MonoBehaviour mono, float delay, UnityAction action)
     {
         mono.StartCoroutine(ExecuteAction(delay, action));

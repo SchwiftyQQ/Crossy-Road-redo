@@ -46,7 +46,6 @@ namespace Assets.Scripts.Ui
         }
 
 
-
         private void OpenOptionsScreen()
         {
             UiManager.Instance.ShowScreen(ScreenType.Options);

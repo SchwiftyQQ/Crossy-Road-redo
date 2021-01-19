@@ -9,6 +9,11 @@ namespace Assets.Scripts
 {
     public class TerrainGenerator : MonoBehaviour
     {
+        const string GRASS = "Grass";
+        const string WATER = "Water";
+        const string ROAD = "Road";
+
+
         [Header("Distance from player that new terrain starts generating")]
         [SerializeField] int distanceFromPlayer;
         [Space]
@@ -23,7 +28,7 @@ namespace Assets.Scripts
         readonly List<GameObject> currentTerrain = new List<GameObject>();
 
 
-        string previousTerrain = null;
+        string previousTerrainName = null;
 
         private void Awake()
         {
@@ -39,35 +44,38 @@ namespace Assets.Scripts
 
         private void GenerateStartingTerrain()
         {
+            // generate "startingTerrainAmount" of terrain on start
 
-
-            Vector3 terrainPos = new Vector3(0f, 0f, 0f);
+            Vector3 position = new Vector3(0f, 0f, 0f);
             for (int i = 0; i < startingTerrainAmount; i++)
             {
+                // choose a random terrain between 3 prefabed terrains, and spawn them without repeating
                 string randomPoolName = pooledTerrainNames[Random.Range(0, pooledTerrainNames.Count)];
-                while (randomPoolName == previousTerrain)
+                while (randomPoolName == previousTerrainName)
                 {
                     randomPoolName = pooledTerrainNames[Random.Range(0, pooledTerrainNames.Count)];
                 }
 
                 switch (randomPoolName)
                 {
-                    case "Grass":
-                        terrainPos = new Vector3(0, 0, startingTerrainSpawnPos.z);
+                    case GRASS:
+                        position = new Vector3(0, 0, startingTerrainSpawnPos.z);
                         break;
-                    case "Water":
-                        terrainPos = new Vector3(0, 0, startingTerrainSpawnPos.z);
+                    case WATER:
+                        position = new Vector3(0, 0, startingTerrainSpawnPos.z);
                         break;
-                    case "Road":
-                        terrainPos = new Vector3(0, 0, startingTerrainSpawnPos.z);
+                    case ROAD:
+                        position = new Vector3(0, 0, startingTerrainSpawnPos.z);
                         break;
                 }
 
-                GameObject startingTerrain = ObjectPooler.Instance.SpawnFromPool(randomPoolName, terrainPos, Quaternion.identity);
-                previousTerrain = randomPoolName;
+                GameObject startingTerrain = ObjectPooler.Instance.SpawnFromPool(randomPoolName, position, Quaternion.identity);
+                previousTerrainName = randomPoolName;
+                
+                // adding terrain into a list so I can get and remove the last one and return in to the pool later, to reuse it.
                 currentTerrain.Add(startingTerrain);
 
-
+                // starting position's Z gets increased everytime so terrin spawns 1 point in front of the next
                 startingTerrainSpawnPos.z++;
             }
         }
