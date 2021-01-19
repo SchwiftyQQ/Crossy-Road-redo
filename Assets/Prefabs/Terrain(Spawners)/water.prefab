@@ -149,8 +149,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logTransitLine: {fileID: 1949766630546125482}
-  minSpawnTime: 2.5
-  maxSpawnTime: 4
+  minSpawnTime: 2
+  maxSpawnTime: 3.5
 --- !u!1 &8668339969966168539
 GameObject:
   m_ObjectHideFlags: 0

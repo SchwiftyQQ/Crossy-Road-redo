@@ -28,7 +28,7 @@ namespace Assets.Scripts
                     pos.y = player.gameObject.transform.position.y + 2f;
 
                     // slowly move camera forward so player has to move or die
-                    pos.z += 0.004f;
+                    pos.z += 0.0055f;
 
                     transform.position = Vector3.SmoothDamp(transform.position, pos, ref velocity, smoothness);
 
