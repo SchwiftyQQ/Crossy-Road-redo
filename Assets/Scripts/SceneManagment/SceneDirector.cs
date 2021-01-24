@@ -87,6 +87,18 @@ namespace Assets.Scripts.SceneManagment
             // RV: When you fire event you should use ?. operator. (LoadingFinished?.Invoke();)
             // If no one is subscribed on that event by the moment of fire you will get an exception
             LoadingFinished.Invoke();
+
+
+            // RV: Here is a hack how you can delay Game scene start while showing loading animation.
+            // You should use LoadSceneAsync and its parameter allowSceneActivation. Here is a link:
+            // https://docs.unity3d.com/ScriptReference/AsyncOperation-allowSceneActivation.html
+            // In short, you're waiting when load operation reaches of 0.9f progress,
+            // wait for loadingScreen animation completion,
+            // disable loadingScreen gameObject,
+            // allow scene activation.
+
+            // This will allow you to remove LoadingFinished event
+            // and will protect you from 'timing' issues when event gets fired before subscription.
         }
 
 

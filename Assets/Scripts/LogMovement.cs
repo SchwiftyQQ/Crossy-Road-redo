@@ -19,6 +19,7 @@ namespace Assets.Scripts
 
         private void OnEnable()
         {
+            // RV: Inconsistent sub/unsub (look to CarMovement.OnEnable)
             events.OnMovingObjectSpawn += MoveLog;
         }
 

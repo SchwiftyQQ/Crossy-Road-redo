@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
+    // RV: As soon you're using GameEvents only in a context of your alive GameManager
+    // it would be nice to store GameEvents instance as a property of GameManager.
+    // And this class can be a plain c# class (no need in deriving from MonoBeh)
     public class GameEvents : MonoBehaviour
     {
         #region quick Singleton

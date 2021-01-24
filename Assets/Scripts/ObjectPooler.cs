@@ -16,6 +16,10 @@ namespace Assets.Scripts
     }
 
 
+    // RV: The same idea as at GameEvents.
+    // You can store pooler reference as a property of GameManager
+    // to be sure that every game restart you're using a new instance of a pooler.
+    // This will help you to avoid using dead objects inside dead pooler.
     public class ObjectPooler : MonoBehaviour
     {
         public List<Pool> pools;
@@ -29,7 +33,7 @@ namespace Assets.Scripts
         {
             Instance = this;
 
-            
+
         }
         #endregion
 
